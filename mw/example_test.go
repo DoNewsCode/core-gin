@@ -1,6 +1,7 @@
-package mw
+package mw_test
 
 import (
+	"github.com/DoNewsCode/core-gin/mw"
 	"github.com/DoNewsCode/core/contract"
 	"github.com/DoNewsCode/core/key"
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ import (
 
 func ExampleWithContext() {
 	g := gin.New()
-	g.Use(Context())
+	g.Use(mw.Context())
 	g.Handle("GET", "/", func(context *gin.Context) {
 		context.String(200, "the request path is %s",
 			context.Request.Context().Value(contract.RequestUrlKey))
@@ -20,7 +21,7 @@ func ExampleWithContext() {
 
 func ExampleWithTrace() {
 	g := gin.New()
-	g.Use(Trace(opentracing.GlobalTracer(), key.New("module", "foo")))
+	g.Use(mw.Trace(opentracing.GlobalTracer(), key.New("module", "foo")))
 	g.Handle("GET", "/", func(context *gin.Context) {
 		// Do stuff
 	})
@@ -28,7 +29,7 @@ func ExampleWithTrace() {
 
 func ExampleWithMetrics() {
 	g := gin.New()
-	g.Use(Metrics(prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
+	g.Use(mw.Metrics(prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
 		Name: "request_duration_seconds",
 		Help: "Total time spent serving requests.",
 	}, []string{"module", "method"}), key.New("module", "foo"), false))
