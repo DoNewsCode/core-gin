@@ -1,6 +1,7 @@
 package mw_test
 
 import (
+	"github.com/DoNewsCode/core-gin/mw"
 	"github.com/DoNewsCode/core/key"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
@@ -13,4 +14,3 @@ func ExampleWithTrace() {
 		// Do stuff
 	})
 }
-
