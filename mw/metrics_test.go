@@ -1,12 +1,13 @@
 package mw
 
 import (
-	"github.com/DoNewsCode/core/key"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/DoNewsCode/core/srvhttp"
 	"github.com/gin-gonic/gin"
 	"github.com/go-kit/kit/metrics"
 	"github.com/stretchr/testify/assert"
-	"net/http/httptest"
-	"testing"
 )
 
 type mockMetric struct {
@@ -42,7 +43,7 @@ func TestWithMetrics(t *testing.T) {
 			t.Parallel()
 			metric := &mockMetric{}
 			g := gin.New()
-			g.Use(Metrics(metric, key.New("module", "foo"), c.addPath))
+			g.Use(Metrics(srvhttp.NewRequestDurationSeconds(metric), c.addPath))
 			g.Handle("GET", "/", func(context *gin.Context) {
 				context.String(200, "%s", "ok")
 			})
