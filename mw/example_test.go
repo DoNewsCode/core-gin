@@ -1,4 +1,4 @@
-package mw
+package mw_test
 
 import (
 	"github.com/DoNewsCode/core/key"
@@ -8,8 +8,9 @@ import (
 
 func ExampleWithTrace() {
 	g := gin.New()
-	g.Use(Trace(opentracing.GlobalTracer(), key.New("module", "foo")))
+	g.Use(mw.Trace(opentracing.GlobalTracer(), key.New("module", "foo")))
 	g.Handle("GET", "/", func(context *gin.Context) {
 		// Do stuff
 	})
 }
+
