@@ -15,15 +15,15 @@ import (
 // cardinality of request path is high.
 func Metrics(hist metrics.Histogram, keyer contract.Keyer, addPath bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		var k contract.Keyer
 		if addPath {
-			keyer = key.With(keyer, "method", c.FullPath())
+			k = key.With(keyer, "route", c.FullPath())
 		} else {
-			keyer = key.With(keyer, "method", "-")
+			k = key.With(keyer, "route", "-")
 		}
 
 		defer func(begin time.Time) {
-			hist.With(keyer.Spread()...).Observe(time.Since(begin).Seconds())
+			hist.With(k.Spread()...).Observe(time.Since(begin).Seconds())
 		}(time.Now())
 		c.Next()
 	}
